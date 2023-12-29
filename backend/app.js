@@ -52,15 +52,14 @@ socket.on('connection',async (socket)=>{
     socket.on('disconnect',async(disconnected)=>{
      await User.findByIdAndUpdate({_id:id},{$set:{status:'0'}});
      console.log('Connection with Socket was disconnected');
-
      socket.broadcast.emit('offlineUsers',{user_id:id});
 
     });
 
 
     socket.on('new message',async  function(data){
-        console.log(data);
-        socket.broadcast.emit('loadMessages',userdata);
+        console.log('data',data);
+        socket.broadcast.emit('loadMessages',data);
     });
 
     socket.on('existing message',async function(data)
@@ -70,13 +69,11 @@ socket.on('connection',async (socket)=>{
             {senderId:data.reciever_id,reciever_id:data.senderId}
 
         ]});
-        console.log(loadMessages)
         socket.emit('loadChat',{loadMessages:loadMessages});
     });
 
     socket.on('message deleted',async function(data){
         var updateddeleteflag = await message.findByIdAndUpdate({_id:data.id},{$set :{isdelete:true}});
-        console.log('updated',updateddeleteflag);
         socket.broadcast.emit('deleted message',{id:data.id});
     })
 })

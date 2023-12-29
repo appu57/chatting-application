@@ -45,7 +45,9 @@ export class ChattingService {
     const postUrl = 'http://localhost:3000/messages/sendMessage';
     return new Observable<any>((observer)=>{
       this.http.post(postUrl,data).subscribe((res:any)=>{
+        console.log(res);
          const newdata = {...data,_id:res._id};
+         console.log(newdata);
          this.socket.emit('new message',newdata);
           observer.next(res);
           observer.complete();
@@ -79,7 +81,7 @@ export class ChattingService {
     return new Observable<any>((observer)=>{
       this.socket.on('deleted message',function(data){
         console.log(data);
-        observer.next(data);
+        observer.next(data.id);
       })
     })
   }

@@ -96,7 +96,6 @@ export class HomeComponent implements OnInit,AfterViewInit {
       isdelete:false
     }
    this.chatservice.sendMessages(messageData).subscribe((res)=>{
-     console.log(res);
      this.load();
    });
    this.newMessage='';

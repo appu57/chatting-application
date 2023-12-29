@@ -17,9 +17,9 @@ router.post('/sendMessage',async (req,res,next)=>{
           reciever_id:req.body.reciever_id,
           message:req.body.message
       });
-      await message.save();
+      var savedmessage=await message.save();
       res.statusCode=200;
-      res.status(200).send({sucess:true,message:'Message sent'});
+      res.json(savedmessage);
     }
     catch(e)
     {
