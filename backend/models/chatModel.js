@@ -13,6 +13,10 @@ var chatSchema = new schema({
     message:{
         type:String,
         required:true,
+    },
+    isdelete:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true}
 );

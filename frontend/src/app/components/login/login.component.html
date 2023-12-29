@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div class="login-container">
+        <div class="login-wrapper">
+            <div class="header-name">
+                <h4>CHATTING ARENA</h4>
+            </div>
+            <div class="login-wrapper-container">
+                <div class="login-wrapper-content" id="login-wrapper-content-id">
+                    <div class="user-login-container">
+                        <h2>Login</h2>
+                        <div class="form-container">
+                            <form [formGroup]="loginForm">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter your email</mat-label>
+                                    <input matInput type="email" formControlName="email" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter your password</mat-label>
+                                    <input matInput type="password" formControlName="password" required>
+                                </mat-form-field>
+                                <button type="submit" class="btn btn-primary" (click)="submitLoginForm()">Login</button>
+                            </form>
+                        </div>
+                        <div class="login-form-footer">
+                            <h4>Don't have an account ? </h4>
+                            <a (click)="switchToSignUpOrLoginScreen()">Register</a>
+                        </div>
+                    </div>
+                    <div class="user-signup-container">
+                        <h4>SignUp</h4>
+                        <div class="form-container">
+                            <form [formGroup]="signupForm" enctype="multipart/form-data">
+                                <input #avatar type="file" accept="image/*" style="display: none;"
+                                    (change)="showImage($event)" name="image" required>
+                                <div class="avatar" id="show-image">
+                                    <mat-icon *ngIf="display" (click)="deleteImage()">close</mat-icon>
+                                    <mat-icon (click)="avatar.click()" *ngIf="!display">
+                                        add
+                                    </mat-icon>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatlabel="always">
+                                    <mat-label>Enter your name</mat-label>
+                                    <input matInput type="email" formControlName="name" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter your email</mat-label>
+                                    <input matInput type="email" formControlName="email" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Enter your password</mat-label>
+                                    <input matInput type="password" formControlName="password" required>
+                                </mat-form-field>
+                                <button type="submit" class="btn btn-primary" (click)="submitForm()">Register</button>
+                            </form>
+                        </div>
+                        <div class="login-form-footer">
+                            <h4>Already have an account ? </h4>
+                            <a (click)="switchToSignUpOrLoginScreen()">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

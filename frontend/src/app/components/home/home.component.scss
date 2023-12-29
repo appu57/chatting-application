@@ -1,0 +1,112 @@
+.container{
+    width: 100%;
+    background-color: white;
+    height:100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.home-container{
+    width: 100%;
+}
+
+.same-user{
+    text-align: right;
+    margin-top: 25px;
+
+    p span{
+        background-color: lightgreen;
+        padding: 10px;
+        max-width: 200px;
+        margin: 10px;
+        background-size: cover;
+        border-radius: 10px;
+    }
+}
+
+.no_user {
+    margin-top: 25px;
+    p span{
+    background-color: white;
+    padding: 10px;
+    margin-top: 10px;
+    background-size: cover;
+    border-radius: 10px;
+}
+}
+
+
+.chat-footer{
+    position: absolute;
+    height: 80px;
+    left: -10px;
+    bottom: -10px;
+    right: -10px;
+    margin: 10px;
+    background-color: #EDEDED;
+    padding: 25px;
+}
+
+h2{
+    cursor: pointer;
+}
+
+.chat-box{
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-image: url('../../../assets/images/whatsApp.jpg');
+}
+
+.chat-header {
+    height: 80px;
+    background-color: #EDEDED;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.chat-content{
+    padding:20px;
+}
+
+.message-container
+{
+    height: 636px;
+    max-height: 636px;
+    overflow: scroll;
+
+}
+.chat-content ::-webkit-scrollbar{
+    display: none;
+}
+
+mat-icon{
+    cursor: pointer;
+    color: gray;
+}
+
+.message-container .same-user p{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+.deleted-message{
+    background-color: lightgreen;
+    padding: 10px;
+    max-width: 200px;
+    margin: 10px;
+    background-size: cover;
+    border-radius: 10px;
+    color: gray;
+    font-style: italic;
+
+}
+
+

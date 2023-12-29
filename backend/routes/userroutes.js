@@ -32,17 +32,16 @@ const userController = require('../controllers/userController');
 
 router.route('/register')
     .post(upload.single('image'),async function(req,res,next){
-        let password=req.body.passoword;
         console.log(req.body);
+        let hashpassword=req.body.password;
         bcrypt.genSalt(10,(err,salt) => {
-            bcrypt.hash(`${password}`, salt , (err, hash) =>{
+            bcrypt.hash(`${hashpassword}`, salt , (err, hash) =>{
              if(err) throw (err);
-             req.body.password=hash;
-            })
-        });
+             console.log(hash);
+          
         const newUser = new User({
             name:req.body.name,
-            passoword:req.body.password,
+            password:hash,
             email:req.body.email,
             image:'images/'+req.file.filename,
         });
@@ -50,31 +49,48 @@ router.route('/register')
             res.statusCode=200,
             res.json(savedUser);
         });
-      
-    })
+        })
+    });  
+    });
 
-    .get((req,res,next)=>{
+    router.post('/login',async (req,res,next)=>{
         const email = req.body.email;
-        const password = req.body.passoword;
-        const registeredUser = User.findOne({email:email});
+        const password = req.body.password;
+        const registeredUser = await User.findOne({email:email});  //instead of .then
         if(registeredUser)
         {
-           const passwordMatch = bcrypt.compare(password,registeredUser.password);
+           const passwordMatch =await bcrypt.compare(password,registeredUser.password);
            if(passwordMatch)
            {
-               
                res.statusCode=200;
-               res.statusMessage('Login was successful');
+               res.json(registeredUser);
+           }
+           else{
+            res.statusCode=401;
+            res.json({message:'Login was not allowed for user'});
            }
         }
         else{
             res.statusCode=401;
-            res.statusMessage('Login was not allowed for user');
+            res.json({message:'Login was not allowed for user'});
         }
     });
 
 
+router.route('/getUsers')
+        .get((req,res,next)=>{
+          User.find({}).then((users)=>{
+              res.statusCode=200;
+              res.json(users);
+          });
+        })
 
+        .delete((req,res,next)=>{
+            User.deleteMany().then((empty)=>{
+                res.statusCode=200;
+                res.statusMessage = 'Deleted Successfully'
+            })
+        });
 
 
 
