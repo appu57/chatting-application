@@ -1,0 +1,134 @@
+.group-form-header-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    column-gap: 10px;
+    padding: 10px;
+    background-color: #00a884;
+    h4{
+    letter-spacing: 1px;
+    margin-top: 2px;
+    }
+    mat-icon{
+        cursor: pointer;
+        padding-left: 10px;
+        padding-right: 50px;
+        font-weight: bold;
+    }
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    margin-bottom: 10px;
+
+    mat-icon{
+        position: relative;
+        top: 10px;
+        left: 100px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+        background-color:#00a884 ;
+        color: white;
+        font-weight: bold;
+    }
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.group-form-content-container{
+    padding-left: 20px;
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.mat-pseudo-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 2px solid;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    position: relative;
+    flex-shrink: 0;
+    transition: border-color 90ms cubic-bezier(0, 0, 0.2, 0.1),background-color 90ms cubic-bezier(0, 0, 0.2, 0.1);
+}
+
+::ng-deep .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate{
+    background: #00a884 !important;
+}
+
+.selected-member-container{
+    display: flex;
+    flex-direction: row;
+    column-gap: 4%;
+    margin-bottom: 20px;
+    cursor: pointer;
+    // overflow-x: scroll;
+}
+
+.selected-member-container ::-webkit-scrollbar{
+    display: none;
+}
+
+.circle{
+    width: 44px;
+    height: 44px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    mat-icon{
+        color: black;
+    }
+}
+
+.delete-icon
+{
+    position: relative;
+    mat-icon{
+        position: absolute;
+        left: 33px;
+        bottom: 45px;
+        z-index: 10;
+        color: black;
+    }
+}
+
+button {
+    width: 80%;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #00a884;
+    margin: 5%;
+    border: none;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #00a884;
+    border: none;
+}

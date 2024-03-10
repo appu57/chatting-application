@@ -1,0 +1,44 @@
+<div class="group-form-container">
+    <div class="group-form-header-container">
+        <mat-icon (click)="closeGroup()">keyboard_backspace</mat-icon>
+        <h4>Create New Group</h4>
+    </div>
+    <div class="group-form-content-container">
+        <form [formGroup]="groupForm">
+          <div class="image-container">
+            <div class="avatar" id="show-image">
+                <mat-icon *ngIf="display" (click)="deleteImage()">close</mat-icon>
+                <mat-icon (click)="avatar.click()" *ngIf="!display">
+                    add
+                </mat-icon>
+            </div>
+          </div>
+            <mat-form-field appearance="outline">
+                <mat-label>Enter your group Name</mat-label>
+                <input type="text" matInput formControlName="name" required>
+            </mat-form-field>
+            <div class="selected-member-container" *ngIf="groupForm.get('members').value"> <!--After user is selected it is added to form and from form we are taking value we can also use userlist.selections.selected-->
+               <div class="display_selected_user" *ngFor="let selected of groupForm.get('members').value">
+                   <div class="circle"><mat-icon>person</mat-icon></div>
+                  <h4>{{selected.name |titlecase}}</h4>
+                  <div class="delete-icon">
+                      <mat-icon (click)="removeSelected(selected._id)">cancel</mat-icon>
+                  </div>
+               </div>
+            </div>
+            <h4>Add Group Members</h4>
+            <mat-selection-list #userList formControlName="members" multiple>
+              <mat-list-option *ngFor="let user of users" [value]="user" >
+                {{user.name | titlecase}}
+              </mat-list-option>
+            </mat-selection-list><br>
+            <button class="btn btn-primary" (click)="onformSubmit()">
+                Create Group
+            </button>
+
+            <input type="file" name="groupImage" (change)="showImage($event)" style="display: none;" #avatar>
+        </form>
+
+
+    </div>
+</div>

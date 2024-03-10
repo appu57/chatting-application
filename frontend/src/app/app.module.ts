@@ -15,7 +15,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule} from '@angular/material/list';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { GroupComponent } from './components/group/group.component';
 
 
 
@@ -25,7 +29,8 @@ import { DialogComponent } from './components/dialog/dialog.component';
     AppComponent,
     HomeComponent,
     LoginComponent,
-    DialogComponent
+    DialogComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,
@@ -40,10 +45,13 @@ import { DialogComponent } from './components/dialog/dialog.component';
     MatIconModule,
     HttpClientModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatListModule
     
   ],
   providers: [],
-  bootstrap: [AppComponent,HomeComponent,LoginComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

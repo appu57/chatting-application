@@ -5,6 +5,9 @@ var session = require('express-session');
 const User = require('./models/userRegisterModel');
 var cors = require('cors');
 const message = require('./models/chatModel');
+const GroupMembers = require('./models/groupMembers');
+const GroupChat = require('./models/groupChatModel');
+
 
 
 const {session_secretkey} = process.env;
@@ -31,8 +34,12 @@ app.use(session({
 
 const userRoute = require('./routes/userroutes');
 const messageRoute = require('./routes/messageroutes');
+const groupRoute =require('./routes/grouproutes');
+const groupMemberRoute =require('./routes/groupMembers');
 app.use('/user',userRoute);
 app.use('/messages',messageRoute);
+app.use('/groups',groupRoute);
+app.use('/groupMembers',groupMemberRoute);
 
 server.listen('3000',()=>{
     console.log('Server is running on port 3000');
@@ -75,5 +82,32 @@ socket.on('connection',async (socket)=>{
     socket.on('message deleted',async function(data){
         var updateddeleteflag = await message.findByIdAndUpdate({_id:data.id},{$set :{isdelete:true}});
         socket.broadcast.emit('deleted message',{id:data.id});
-    })
+    });
+
+    socket.on('Join',async function(data){
+            var groupMember = new GroupMembers({
+               groupId:req.body.groupId,
+               userId:req.body.userId
+            });
+           var member = await groupMember.save();
+
+           socket.broadcast.emit('notify Group',{data:member});
+            
+    });
+
+    socket.on('new Group Message',async function(data){
+        socket.broadcast.emit('load new sent message',{data:data});
+    });
+
+    socket.on('delete Message from group',async function(data){
+        var updateddeleteflag = await GroupChat.findByIdAndUpdate({_id:data._id},{$set :{isdelete:true}});
+        socket.broadcast.emit('deleted message',{id:data._id});
+    });
+
+    socket.on('edit Message',async function(data){
+        console.log(data);
+        await message.findByIdAndUpdate({_id:data._id},{$set :{message:data.message}});
+        const newMessage = await message.findById({_id:data._id});
+        socket.broadcast.emit('edited message',{newmessage:newMessage});
+    });
 })

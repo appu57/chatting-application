@@ -1,7 +1,8 @@
 const isLogin = async(req,res,next)=>{
     try{
         if(req.session.user){
-            res.redirect('/dashboard'); //UI page
+            return true
+            // res.redirect('/dashboard'); //UI page
         }
         next();
     }
@@ -15,7 +16,8 @@ const isLogin = async(req,res,next)=>{
 const isLogout = async(req,res,next)=>{
     try{
         if(req.session.user){
-            res.redirect('/'); //UI page
+            return true;
+            // res.redirect('/'); //UI page
         }
         next();
     }

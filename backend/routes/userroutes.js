@@ -4,17 +4,20 @@ var body_parser = require('body-parser');
 var bcrypt = require('bcrypt');
 var User = require('../models/userRegisterModel');
 
-
-
+var cookie_parser= require('cookie-parser');   // in ui use document.cookie.match(new regex(""""name""""))
+router.use(cookie_parser());
 router.use(body_parser.json());
 router.use(body_parser.urlencoded({extended:false}));
 
 router.set('view engine','ejs');
-router.set('views','./views');   //setting view engine
+router.set('views','./views');   //setting view engine for an html code 
 
 router.use(express.static('public')) ; //setting static folder to store images
+
 const path = require('path');
 const multer = require('multer');
+router.use('/images',express.static(path.join('public/images')));
+
 
 const storage = multer.diskStorage({
     destination:function(req,file,cb){
@@ -63,6 +66,8 @@ router.route('/register')
            if(passwordMatch)
            {
                res.statusCode=200;
+               req.session.user= registeredUser;
+               res.cookie('user',JSON.stringify(registeredUser));
                res.json(registeredUser);
            }
            else{
@@ -90,7 +95,12 @@ router.route('/getUsers')
                 res.statusCode=200;
                 res.statusMessage = 'Deleted Successfully'
             })
-        });
+});
+
+router.get('/logout',(req,res,next)=>{
+    res.clearCookie('user');
+    req.session.destroy();
+});
 
 
 

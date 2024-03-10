@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthserviceService } from 'src/app/authGaurds/authservice.service';
 import { ChattingService } from 'src/app/services/chats/chatting.service';
 import { UserregistrationService } from 'src/app/services/users/userregistration.service';
 
@@ -19,10 +20,13 @@ export class LoginComponent implements OnInit {
   formData : FormData = new FormData();
   file: any;
 
-  constructor(private fb:FormBuilder,
+  constructor(private fb:FormBuilder,private authService:AuthserviceService,
     private userservice:UserregistrationService,
     private router:Router,
-    private snackbar:MatSnackBar,private chatService:ChattingService) { }
+    private snackbar:MatSnackBar,
+    private chatService:ChattingService
+ 
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
@@ -50,6 +54,7 @@ export class LoginComponent implements OnInit {
   {
       var showImage = document.getElementById('show-image');
       var render = new FileReader();
+      console.log(event.target.files[0]);
       render.readAsDataURL(event.target.files[0]);
       render.onload = (_event) => { 
         showImage.style.backgroundImage=`url(${render.result})`;
@@ -89,8 +94,17 @@ export class LoginComponent implements OnInit {
       this.chatService.setUserStatusOnline(data?._id).then((boolean)=>{
         console.log(boolean);
       });
-      localStorage.setItem('id',data._id);
-      this.router.navigate(['/home',data._id]);
+      sessionStorage.setItem('id',data._id);
+      let redirectId=null;
+      if(this.authService.redirectUrl)
+      {
+       redirectId= `${this.authService.redirectUrl}/${data._id}`;
+      }
+      let redirectUrl = redirectId || `/home/${data._id}` ;
+
+        this.router.navigate([redirectUrl]);
+      
+    
       // const boolean = await this.userservice.setUserStatusOnline(res._id);
       //two ways of calling a promise type using async and await which using await returns resolve or reject value another type is traditional .then()
     },

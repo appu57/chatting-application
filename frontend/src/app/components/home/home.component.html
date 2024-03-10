@@ -1,37 +1,122 @@
 <div class="container">
   <div class="home-container">
-
     <div class="row">
       <div class="col-lg-4 col-md-4">
-        <div *ngFor="let user of users" (click)="updateSelectedUser(user)">
-          <h2>{{user.name}}</h2>
-          <p id="{{user._id}}_status">{{user.status == '0' ? 'offline' : 'online'}}</p>
+        <div class="loggedIn-user">
+          <h2>{{currentUser.name | titlecase}}</h2>
+          <mat-icon (click)="displayGroup()">menu</mat-icon>
+        </div>
+        <div class="user-group-container" *ngIf="showUsers ; else showGroup">
+          <div class="userList" *ngFor="let value of combinedGroup">
+            <ng-container *ngIf="value.email;else groupTemplate">
+              <div class="user-container" (click)="updateSelectedUser(value)">
+                <h2>{{value.name | titlecase }}</h2>
+                <p id="{{value._id}}_status">{{value.status == '0' ? 'offline' : 'online'}}</p>
+              </div>
+
+            </ng-container>
+            <ng-template #groupTemplate>
+              <div class="group-container" (click)="updateSelectedGroup(value)">
+                <h2>{{value.name | titlecase }}</h2>
+              </div>
+            </ng-template>
+          </div>
         </div>
       </div>
-      <div class="col-lg-8 col-md-8" *ngIf="selectedUser">
-        <div class="chat-box">
-          <div class="chat-header">
-            <img [src]="selectedUser.image">
-            <p>{{selectedUser.name}}</p>
+      <div class="col-lg-8 col-md-8">
+        <div *ngIf="groupTobeJoined">
+          <div class="chat-header group-header">
+            <h2>{{groupTobeJoined.name}}</h2>
+            <div class="left-container">
+              <img [src]="selectedGroup.image">
+              <p>{{selectedGroup.name | titlecase }}</p>
+            </div>
+            <div class="right-container">
+              <p>delete</p>
+              <a class="sharable-link" (click)="createGroupLink(selectedGroup._id)">
+                <mat-icon>save</mat-icon>
+              </a>
+
+            </div>
           </div>
-          <div class="chat-content">
-            <div class="message-container" id="message-container-id" #scroll>
-              <div class="message" *ngFor="let message of messageArray ; let last =last"
-                [ngClass]="message.senderId == id ? 'same-user':'no_user'">
-                <p><span id="{{message._id}}_container">{{message.isdelete ? 'This message was deleted' : message.message}}</span><mat-icon *ngIf="message.senderId == id" (click)="deleteText(message._id)">delete</mat-icon></p>
-                {{last ? scrollToBottom() : '' }} <!--Scrolls to bottom -->
+          <button class="btn btn-primary" (click)="groupJoined()">Join the Group</button>
+
+        </div>
+        <div *ngIf="!groupTobeJoined">
+          <div class="chat-box" *ngIf="selectedUser">
+            <div class="chat-header">
+              <img src="{{selectedUser?.image}}">
+              <p>{{selectedUser.name | titlecase }}</p>
+            </div>
+            <div class="chat-content">
+              <div class="message-container" id="message-container-id" #scroll>
+                <div class="message" *ngFor="let message of messageArray ; let last =last"
+                  [ngClass]="message.senderId == id ? 'same-user':'no_user'">
+                  <p><span id="{{message._id}}_container">{{message.isdelete ? 'This message was deleted' :
+                      message.message}}</span>
+                    <mat-icon *ngIf="message.senderId == id" (click)="deleteGroupText(message._id)">delete</mat-icon>
+                    <mat-icon *ngIf="message.senderId==id" (click)="showInput(message._id,message.message)">edit
+                    </mat-icon>
+                  </p>
+                  <p *ngIf="showInputField && message.senderId==id"><span>
+                      <mat-icon (click)="deleteEditMessage(message._id,message.message)">cancel</mat-icon>
+                      <mat-icon (click)="editMessage(message._id)">done</mat-icon>
+                    </span></p>
+                  {{last ? scrollToBottom() : '' }}
+                  <!--Scrolls to bottom -->
+                </div>
+              </div>
+            </div>
+            <div class="chat-footer">
+              <div class="row">
+                <div class="col-lg-10 col-md-9">
+                  <input type="text" [(ngModel)]="newMessage" class="form-control" placeholder="Type a message">
+                </div>
+                <div class="col-lg-2 col-md-3">
+                  <button class="btn btn-primary" (click)="sendMessage($event)">
+                    Send Message
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="chat-footer">
-            <div class="row">
-              <div class="col-lg-10 col-md-9">
-                <input type="text" [(ngModel)]="newMessage" class="form-control" placeholder="Type a message">
+          <div class="chat-box" *ngIf="selectedGroup">
+            <div class="chat-header group-header">
+              <div class="left-container">
+                <img [src]="selectedGroup.image">
+                <p>{{selectedGroup.name | titlecase }}</p>
               </div>
-              <div class="col-lg-2 col-md-3">
-                <button class="btn btn-primary" (click)="sendMessage($event)">
-                  Send Message
-                </button>
+              <div class="right-container">
+                <p>delete</p>
+                <a class="sharable-link" (click)="createGroupLink(selectedGroup._id)">
+                  <mat-icon>save</mat-icon>
+                </a>
+
+              </div>
+            </div>
+            <div class="chat-content">
+              <div class="message-container" id="message-container-id" #scroll>
+                <div class="message" *ngFor="let message of groupmessageArray ; let last =last"
+                  [ngClass]="message.senderId == id ? 'same-user':'no_user'">
+                  <p><span id="{{message._id}}_container">{{message.isdelete ? 'This message was deleted' :
+                      message.message}}</span>
+                    <mat-icon *ngIf="message.senderId == id" (click)="deleteText(message._id)">delete</mat-icon>
+                  </p>
+                  {{last ? scrollToBottom() : '' }}
+                  <!--Scrolls to bottom -->
+                </div>
+              </div>
+            </div>
+            <div class="chat-footer">
+              <div class="row">
+                <div class="col-lg-10 col-md-9">
+                  <input type="text" [(ngModel)]="newMessage" class="form-control" placeholder="Type a message">
+                </div>
+                <div class="col-lg-2 col-md-3">
+                  <button class="btn btn-primary" (click)="sendMessageToGroup($event)">
+                    Send Message
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -43,4 +128,6 @@
 
 </div>
 
-
+<ng-template #showGroup>
+  <app-group (closeGroupTab)="showUsers=true" [users]="users" [id]="id"></app-group>
+</ng-template>
