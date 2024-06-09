@@ -58,7 +58,7 @@
                     <mat-icon *ngIf="message.senderId==id" (click)="showInput(message._id,message.message)">edit
                     </mat-icon>
                   </p>
-                  <p *ngIf="showInputField && message.senderId==id"><span>
+                  <p *ngIf="showInputField && message.senderId==id && message._id==selectedId"><span>
                       <mat-icon (click)="deleteEditMessage(message._id,message.message)">cancel</mat-icon>
                       <mat-icon (click)="editMessage(message._id)">done</mat-icon>
                     </span></p>

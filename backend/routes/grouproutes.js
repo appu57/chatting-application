@@ -64,6 +64,8 @@ router.post('/invite-link',async(req,res,next)=>{
     var group = await Group.findOne({_id:req.body.groupId});
 
         console.log("group",group);
+        if(group != null)
+        {
         var members = await GroupMember.find({groupId:req.body.groupId}).count();
 
         var admin= group.adminId == req.body.userId ? true:false;
@@ -72,6 +74,7 @@ router.post('/invite-link',async(req,res,next)=>{
 
         res.statusCode=200;
         res.json({alreadyJoined:value});
+        }
 })
 
 router.post('/userAddedGroups',async (req,res,next)=>{

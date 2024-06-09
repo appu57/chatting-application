@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } fr
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Timestamp } from 'rxjs';
-import { buffer } from 'rxjs/operator/buffer';
+
 import { AuthserviceService } from 'src/app/authGaurds/authservice.service';
 import { ChattingService } from 'src/app/services/chats/chatting.service';
 import { UserregistrationService } from 'src/app/services/users/userregistration.service';
@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   showInputField: boolean = false;
   originalvalue: string;
   inputElement: any;
+  selectedId:any;
   constructor(private userservice: UserregistrationService, private route: ActivatedRoute,
     private chatservice: ChattingService, private matDialog: MatDialog, private authService: AuthserviceService,
     private el:ElementRef,private renderer:Renderer2) { }
@@ -172,6 +173,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
   scrollToBottom() {
+    console.log("scroll");
     this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
   }
 
@@ -228,6 +230,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   showInput(messageid: string, message: string) {
    const id=messageid+"_container";
+   this.selectedId=messageid;
    const messageContainer = document.getElementById(id);
    this.originalvalue=messageContainer.textContent;
 
@@ -252,6 +255,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.applyStyles(span,this.inputElement,message);
     this.inputElement.replaceWith(span);
     span.textContent=message; 
+    span.style.maxWidth='400px';
+    span.style.overflowWrap='break-word';
+    span.style.width='auto';
     this.inputElement=null;
     this.originalvalue=null;
   }
