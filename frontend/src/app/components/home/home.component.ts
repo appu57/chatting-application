@@ -199,7 +199,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     var url = window.location.host + '/invite-link/' + id;
 
     var copiedInput = document.createElement('input');
-    document.body.appendChild(copiedInput);
+    copiedInput.style.display='none';
     copiedInput.value = url;
     copiedInput.select();
     document.execCommand("copy");
@@ -258,6 +258,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     span.style.maxWidth='400px';
     span.style.overflowWrap='break-word';
     span.style.width='auto';
+    span.style.height='max-content';
     this.inputElement=null;
     this.originalvalue=null;
   }
@@ -272,6 +273,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.chatservice.editUserMessage(this.inputElement.value,id);
     span.style.maxWidth='400px';
     span.style.overflowWrap='break-word';
+    span.style.height='max-content';
     this.inputElement=null;
     this.originalvalue=null;
     span.style.width='auto';
